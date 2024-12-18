@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rock-Paper-Scissors Game</title>
+    <style>
+      body {
+        font-family: "Poppins", Arial, sans-serif;
+        text-align: center;
+        background: linear-gradient(135deg, #00c6ff, #0072ff);
+        margin: 0;
+        padding: 20px;
+        color: #fff;
+      }
+
+      h1 {
+        color: #fff;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .game-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .options {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      button {
+        padding: 15px 25px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        border: none;
+        border-radius: 50px;
+        background: linear-gradient(135deg, #ff6a00, #ee0979);
+        color: #fff;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      button:hover {
+        transform: scale(1.1);
+        background: linear-gradient(135deg, #ff8008, #fc6767);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .visualization {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        margin-top: 20px;
+      }
+
+      .choice {
+        width: 150px;
+        height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 3px solid rgba(255, 255, 255, 0.6);
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, background 0.3s ease;
+      }
+
+      .choice:hover {
+        transform: scale(1.1);
+        background: rgba(255, 255, 255, 0.4);
+      }
+
+      .choice img {
+        width: 100px;
+        height: 100px;
+      }
+
+      .result {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      .scoreboard {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        margin-top: 20px;
+        font-size: 1.2rem;
+      }
+
+      .score {
+        background: rgba(255, 255, 255, 0.3);
+        padding: 15px 25px;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      @media (max-width: 600px) {
+        .visualization {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .choice {
+          width: 120px;
+          height: 120px;
+        }
+
+        button {
+          padding: 10px 20px;
+          font-size: 1rem;
+        }
+      }
+    </style>
+    <script>
+      const choices = ["rock", "paper", "scissors"];
+      const imagePaths = {
+        rock: "https://cdn.pixabay.com/photo/2014/03/25/15/26/rock-paper-scissors-296854_1280.png",
+        paper:
+          "https://cdn.pixabay.com/photo/2014/03/25/15/26/rock-paper-scissors-296855_1280.png",
+        scissors:
+          "https://cdn.pixabay.com/photo/2014/03/25/15/26/rock-paper-scissors-296853_960_720.png",
+      };
+
+      let playerScore = 0;
+      let botScore = 0;
+
+      const randomNumber = () => Math.floor(Math.random() * 3);
+
+      const getValue = (a) => choices[a];
+
+      const updateResult = (playerChoice, botChoice, result) => {
+        document.getElementById("player-choice").innerHTML = `
+        <img src="${imagePaths[playerChoice]}" alt="${playerChoice}">`;
+        document.getElementById("bot-choice").innerHTML = `
+        <img src="${imagePaths[botChoice]}" alt="${botChoice}">`;
+        document.getElementById("result").innerText = result;
+
+        if (result === "You win!") {
+          playerScore++;
+        } else if (result === "You lose!") {
+          botScore++;
+        }
+        document.getElementById("player-score").innerText = playerScore;
+        document.getElementById("bot-score").innerText = botScore;
+      };
+
+      const playGame = (playerChoice) => {
+        const botChoice = getValue(randomNumber());
+        let result = "";
+
+        if (playerChoice === botChoice) {
+          result = "It's a draw!";
+        } else if (
+          (playerChoice === "rock" && botChoice === "scissors") ||
+          (playerChoice === "paper" && botChoice === "rock") ||
+          (playerChoice === "scissors" && botChoice === "paper")
+        ) {
+          result = "You win!";
+        } else {
+          result = "You lose!";
+        }
+
+        updateResult(playerChoice, botChoice, result);
+      };
+    </script>
+  </head>
+  <body>
+    <h1>Rock-Paper-Scissors</h1>
+    <div class="game-container">
+      <div class="options">
+        <button onclick="playGame('rock')">Rock</button>
+        <button onclick="playGame('paper')">Paper</button>
+        <button onclick="playGame('scissors')">Scissors</button>
+      </div>
+
+      <div class="visualization">
+        <div class="choice" id="player-choice">
+          <p>Your choice</p>
+        </div>
+        <div class="choice" id="bot-choice">
+          <p>Bot's choice</p>
+        </div>
+      </div>
+
+      <div class="result" id="result">Make your move!</div>
+
+      <div class="scoreboard">
+        <div class="score">Player Score: <span id="player-score">0</span></div>
+        <div class="score">Bot Score: <span id="bot-score">0</span></div>
+      </div>
+    </div>
+  </body>
+</html>
